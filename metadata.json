@@ -1,0 +1,5 @@
+{
+  "name": "Email Builder",
+  "description": "A drag-and-drop email builder using Puck and MJML",
+  "requestFramePermissions": []
+}

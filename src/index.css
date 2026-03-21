@@ -1,0 +1,218 @@
+@import "tailwindcss";
+
+/* Base Puck overrides for an enterprise feel */
+:root {
+	--puck-color-azure-04: #f8fafc; /* Lighter background for empty zones */
+	--puck-color-azure-05: #e2e8f0; /* Subtle borders */
+	--puck-color-azure-09: #3b82f6; /* Primary blue for active states only */
+}
+
+/* Remove the heavy custom hover states that were causing the annoying blue highlighting */
+[data-puck-dropzone] {
+	position: relative;
+}
+
+/* Only show dashed border when the dropzone is completely empty */
+[data-puck-dropzone]:empty {
+	border: 1px dashed #cbd5e1;
+	background-color: #f8fafc;
+	border-radius: 4px;
+	min-height: 60px;
+}
+
+[data-puck-dropzone]:empty::after {
+	content: "Drag & Drop content here";
+	color: #94a3b8;
+	font-size: 13px;
+	font-weight: 400;
+	font-family: "Inter", sans-serif;
+	pointer-events: none;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+/* Very subtle hover on empty dropzones only */
+[data-puck-dropzone]:empty:hover {
+	border-color: #94a3b8;
+	background-color: #f1f5f9;
+}
+
+/* Active dropzone state - transparent by default so we don't highlight populated blocks */
+[data-puck-dropzone-active="true"] {
+	background-color: transparent;
+	outline: none;
+}
+
+/* Only highlight the dropzone when actively dragging if it is completely empty */
+[data-puck-dropzone]:empty[data-puck-dropzone-active="true"] {
+	background-color: rgba(59, 130, 246, 0.03);
+	border-color: #3b82f6;
+}
+
+/* Puck's default component hover is too strong, let's tone it down */
+[data-puck-component] {
+	outline: none;
+}
+
+[data-puck-component]:hover {
+	outline: none;
+}
+
+/* The actual drag indicator (the line between blocks) */
+[class*="DropZone-indicator"] {
+	background-color: #3b82f6;
+	height: 4px;
+	border-radius: 2px;
+	box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+	z-index: 50;
+}
+
+/* Make drag handles more obvious but clean */
+[data-puck-drag-handle] {
+	cursor: grab;
+	opacity: 0;
+	transition: opacity 0.2s ease;
+}
+
+[data-puck-component]:hover > [data-puck-drag-handle],
+[data-puck-component]:hover [data-puck-drag-handle] {
+	opacity: 1;
+}
+
+[data-puck-drag-handle]:active {
+	cursor: grabbing;
+}
+
+/* Hide the root dropzone outline to prevent the "annoying blue highlighting of everything" */
+[data-puck-dropzone="root"] {
+	outline: none;
+	border: none;
+	background: transparent;
+}
+
+[data-puck-dropzone="root"]:hover {
+	outline: none;
+	border: none;
+	background: transparent;
+}
+
+/* --- NEW OVERRIDES FOR DRAG AND DROP HIGHLIGHTING --- */
+
+/* Remove the blue background and outline from the entire drop zone when dragging over it */
+[class*="_DropZone--isDestination"],
+[class*="_DropZone--hoveringOverArea"],
+[class*="_DropZone--isAreaSelected"],
+[data-puck-dragging] [class*="_DropZone--isEnabled"] {
+	outline: none;
+	background: transparent;
+}
+
+/* When dragging, outline the elements themselves instead of the drop zones */
+[data-puck-dragging] [data-puck-component] {
+	outline: 1px dashed #94a3b8;
+	outline-offset: -1px;
+}
+
+/* Remove any background or resizing from drop zones during drag to prevent layout shifts */
+[data-puck-dragging] [data-puck-dropzone]:not([data-puck-dropzone="root"]) {
+	background: transparent;
+	outline: none;
+}
+
+/* Highlight the specific drop zone being hovered over during drag - removed to keep it clean */
+[data-puck-dragging]
+	[data-puck-dropzone-active="true"]:not([data-puck-dropzone="root"]) {
+	background-color: transparent;
+	box-shadow: none;
+}
+
+/* Make hitboxes between elements smaller so they don't steal focus from container dropzones */
+[class*="_DropZone-hitbox"] {
+	height: 12px;
+	bottom: -6px;
+	z-index: 10;
+}
+
+/* Show a line between elements when hovering over the hitbox during drag */
+[data-puck-dragging] [class*="_DropZone-hitbox"]:hover::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 0;
+	right: 0;
+	height: 4px;
+	background-color: #3b82f6;
+	border-radius: 2px;
+	transform: translateY(-50%);
+	z-index: 50;
+	pointer-events: none;
+}
+
+/* Remove the dashed outline from the overlay portal on hover, make it a subtle solid line */
+[data-puck-overlay-portal]:hover {
+	outline: none;
+	box-shadow: inset 0 0 0 1px #3b82f6;
+}
+
+/* --- NEW OVERRIDES FOR SELECTION HIGHLIGHTS --- */
+
+/* Allow text selection inside components and fix cursor */
+[data-puck-component] {
+	cursor: default;
+	user-select: auto;
+	-webkit-user-select: auto;
+}
+
+[data-puck-component] * {
+	pointer-events: auto;
+	user-select: auto;
+	-webkit-user-select: auto;
+}
+
+/* Only show grab cursor on the actual drag handle */
+[data-puck-drag-handle] {
+	cursor: grab;
+}
+
+/* Canvas blocks selected state - remove all outlines and just use a single inner shadow */
+[class*="_DraggableComponent--isSelected"]
+	> [class*="_DraggableComponent-overlayWrapper"]
+	> [class*="_DraggableComponent-overlay"] {
+	background-color: transparent;
+	box-shadow: inset 0 0 0 2px #3b82f6;
+	outline: none;
+	border: none;
+}
+
+/* Remove the extra wrapper outline that puck adds */
+[class*="_DraggableComponent"]:focus-visible
+	> [class*="_DraggableComponent-overlayWrapper"] {
+	outline: none;
+}
+
+/* Canvas blocks hover state - removed to reduce visual noise */
+[class*="_DraggableComponent--hover"]
+	> [class*="_DraggableComponent-overlayWrapper"]
+	> [class*="_DraggableComponent-overlay"] {
+	background-color: transparent;
+	box-shadow: none;
+	outline: none;
+	border: none;
+}
+
+/* Layers panel selected state - fix text color becoming too light */
+[class*="_Layer--isSelected"] > [class*="_Layer-inner"] {
+	background-color: #eff6ff;
+	box-shadow: inset 0 0 0 1px #3b82f6;
+	color: #1e40af;
+}
+
+/* Layers panel hover state */
+[class*="_Layer"]:not([class*="_Layer--isSelected"])
+	> [class*="_Layer-inner"]:hover {
+	background-color: #f8fafc;
+	color: #334155;
+	border-color: transparent;
+}
