@@ -25,6 +25,7 @@ export function CodeModal({
 					<h2 className="text-lg font-semibold">Code Output</h2>
 					<div className="flex items-center gap-4">
 						<button
+							type="button"
 							onClick={handleCopyCode}
 							className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
 						>
@@ -36,6 +37,7 @@ export function CodeModal({
 							{copied ? "Copied!" : "Copy Code"}
 						</button>
 						<button
+							type="button"
 							onClick={() => setShowCode(false)}
 							className="text-gray-500 hover:text-gray-700"
 						>

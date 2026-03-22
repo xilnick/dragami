@@ -57,6 +57,22 @@ export function parseHtmlToPuck(html: string): Data {
 					padding: 10,
 				},
 			});
+		} else if (node.tagName === "UL" || node.tagName === "OL") {
+			const items = Array.from(node.children)
+				.filter((child) => child.tagName === "LI")
+				.map((child) => ({ text: child.textContent || "" }));
+
+			data.content.push({
+				type: "ListBlock",
+				props: {
+					id: generateId(),
+					items,
+					listType: node.tagName.toLowerCase() as "ul" | "ol",
+					color: "#333333",
+					fontSize: 16,
+					padding: 10,
+				},
+			});
 		} else {
 			// Treat as text block if it has text content
 			if (node.textContent?.trim()) {

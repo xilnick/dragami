@@ -152,6 +152,62 @@ export const ContentBlocks = {
 			);
 		},
 	},
+	ListBlock: {
+		fields: {
+			items: {
+				type: "array" as const,
+				getItemSummary: (item: any) => item.text || "List Item",
+				arrayFields: {
+					text: { type: "text" as const },
+				},
+			},
+			listType: {
+				type: "radio" as const,
+				options: [
+					{ label: "Unordered (Bullets)", value: "ul" },
+					{ label: "Ordered (Numbers)", value: "ol" },
+				],
+			},
+			color: { type: "text" as const },
+			fontSize: { type: "number" as const },
+			padding: { type: "number" as const },
+		},
+		defaultProps: {
+			items: [
+				{ text: "First item" },
+				{ text: "Second item" },
+				{ text: "Third item" },
+			],
+			listType: "ul",
+			color: "#333333",
+			fontSize: 16,
+			padding: 10,
+		},
+		render: ({ items, listType, color, fontSize, padding }: any) => {
+			const ListTag = listType === "ol" ? "ol" : "ul";
+			const listStyleType = listType === "ol" ? "decimal" : "disc";
+
+			return (
+				<div style={{ padding: `${padding}px` }}>
+					<ListTag
+						style={{
+							color,
+							fontSize: `${fontSize}px`,
+							paddingLeft: "20px",
+							margin: 0,
+							listStyleType,
+						}}
+					>
+						{items.map((item: any, i: number) => (
+							<li key={i} style={{ marginBottom: "8px" }}>
+								{item.text}
+							</li>
+						))}
+					</ListTag>
+				</div>
+			);
+		},
+	},
 	CTAButton: {
 		fields: {
 			text: { type: "text" as const },

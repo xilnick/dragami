@@ -30,6 +30,13 @@ export type UnifiedProps = {
 		letterSpacing: number;
 		fontFamily: string;
 	};
+	ListBlock: {
+		items: { text: string }[];
+		listType: "ul" | "ol";
+		color: string;
+		fontSize: number;
+		padding: number;
+	};
 	Image: {
 		src: string;
 		alt: string;
@@ -39,6 +46,14 @@ export type UnifiedProps = {
 		padding: number;
 		borderRadius: number;
 		caption: string;
+	};
+	VideoBlock: {
+		src: string;
+		alt: string;
+		width: number;
+		link: string;
+		align: "left" | "center" | "right";
+		padding: number;
 	};
 	CTAButton: {
 		text: string;
@@ -215,7 +230,9 @@ const commonComponentsList: (keyof UnifiedProps)[] = [
 	"SpacerBlock",
 	"TitleBlock",
 	"TextBlock",
+	"ListBlock",
 	"Image",
+	"VideoBlock",
 	"LogoBlock",
 	"DoubleImageBlock",
 	"TripleImageBlock",

@@ -45,6 +45,25 @@ export function generateMjml(data: Data): string {
             ${block.props.content}
           </mj-text>
         `;
+			case "ListBlock": {
+				const items = block.props.items || [];
+				const listType = block.props.listType === "ol" ? "ol" : "ul";
+				const listItems = items
+					.map(
+						(item: any) => `<li style="margin-bottom: 8px;">${item.text}</li>`,
+					)
+					.join("");
+				const listStyleType =
+					block.props.listType === "ol" ? "decimal" : "disc";
+
+				return `
+          <mj-text color="${block.props.color}" font-size="${block.props.fontSize}px" padding="${block.props.padding}px">
+            <${listType} style="margin: 0; padding-left: 20px; list-style-type: ${listStyleType};">
+              ${listItems}
+            </${listType}>
+          </mj-text>
+        `;
+			}
 			case "CTAButton": {
 				const ctaTextColor = getContrastColor(block.props.bgColor);
 				return `
@@ -57,6 +76,15 @@ export function generateMjml(data: Data): string {
 				if (!block.props.src) return ""; // Skip empty skeletons in export
 				return `
           <mj-image align="${block.props.align}" src="${block.props.src}" alt="${block.props.alt}" width="${block.props.width}%" href="${block.props.link || ""}" padding="${block.props.padding}px" />
+        `;
+			case "VideoBlock":
+				if (!block.props.src) return ""; // Skip empty skeletons in export
+				return `
+          <mj-section padding="${block.props.padding}px">
+            <mj-column>
+              <mj-image align="${block.props.align}" src="${block.props.src}" alt="${block.props.alt}" width="${block.props.width}%" href="${block.props.link || ""}" padding="0" />
+            </mj-column>
+          </mj-section>
         `;
 			case "Divider":
 				return `
