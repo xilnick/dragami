@@ -762,6 +762,7 @@ export function TemplateGalleryModal({
 						</p>
 					</div>
 					<button
+						type="button"
 						onClick={() => {
 							setShowGallery(false);
 							setConfirmingId(null);
@@ -804,6 +805,7 @@ export function TemplateGalleryModal({
 											<p className="text-sm opacity-90 mb-4">Are you sure?</p>
 											<div className="flex gap-3">
 												<button
+													type="button"
 													className="px-4 py-2 bg-white text-blue-600 rounded-md font-medium text-sm hover:bg-blue-50 transition-colors"
 													onClick={(e) => {
 														e.stopPropagation();
@@ -815,6 +817,7 @@ export function TemplateGalleryModal({
 													Yes, Load
 												</button>
 												<button
+													type="button"
 													className="px-4 py-2 bg-blue-700 text-white rounded-md font-medium text-sm hover:bg-blue-800 transition-colors"
 													onClick={(e) => {
 														e.stopPropagation();
@@ -835,6 +838,7 @@ export function TemplateGalleryModal({
 										{template.description}
 									</p>
 									<button
+										type="button"
 										className={`mt-4 w-full py-2 font-medium rounded-lg transition-colors ${
 											confirmingId === template.id
 												? "bg-blue-600 text-white"

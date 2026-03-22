@@ -11,6 +11,7 @@ import { ImageManagerModal } from "./components/ImageManagerModal";
 import { ImportModal } from "./components/ImportModal";
 import { PreviewModal } from "./components/PreviewModal";
 import { TemplateGalleryModal } from "./components/TemplateGalleryModal";
+import { Toast } from "./components/Toast";
 import { emailConfig, webConfig } from "./configs/unified.config";
 import { useBuilderStore } from "./store/useBuilderStore";
 import { useLiveContentStore } from "./store/useLiveContentStore";
@@ -47,6 +48,7 @@ export default function App() {
 	const [codeOutput, setCodeOutput] = useState("");
 	const [previewHtml, setPreviewHtml] = useState("");
 	const [importHtmlStr, setImportHtmlStr] = useState("");
+	const [showToast, setShowToast] = useState(false);
 
 	const currentData = outputType === "email" ? emailData : webData;
 	const currentConfig = outputType === "email" ? emailConfig : webConfig;
@@ -211,6 +213,13 @@ export default function App() {
 		setShowClearConfirm(false);
 	}, [clearCurrentData, clearOverrides]);
 
+	const handleSave = useCallback(() => {
+		const finalData = getMergedData();
+		setCurrentData(finalData);
+		clearOverrides();
+		setShowToast(true);
+	}, [getMergedData, setCurrentData, clearOverrides]);
+
 	const handlePublish = useCallback(
 		(data: Data) => {
 			const mergedData = mergeOverrides(
@@ -303,6 +312,7 @@ export default function App() {
 					handlePreview={handlePreview}
 					handleShowCode={handleShowCode}
 					handleExport={handleExport}
+					handleSave={handleSave}
 				/>
 			),
 			drawerItem: ({ name }: { name: string }) => {
@@ -362,6 +372,7 @@ export default function App() {
 			handlePreview,
 			handleShowCode,
 			handleExport,
+			handleSave,
 		],
 	);
 
@@ -525,6 +536,13 @@ export default function App() {
 						</div>
 					</div>
 				</div>
+			)}
+
+			{showToast && (
+				<Toast
+					message="Changes saved successfully!"
+					onClose={() => setShowToast(false)}
+				/>
 			)}
 		</div>
 	);

@@ -5,6 +5,7 @@ import {
 	Eye,
 	LayoutTemplate,
 	Redo2,
+	Save,
 	Send,
 	Trash2,
 	Undo2,
@@ -23,6 +24,7 @@ interface BuilderHeaderProps {
 	handlePreview: () => void;
 	handleShowCode: () => void;
 	handleExport: () => void;
+	handleSave: () => void;
 }
 
 export function BuilderHeader({
@@ -35,6 +37,7 @@ export function BuilderHeader({
 	handlePreview,
 	handleShowCode,
 	handleExport,
+	handleSave,
 }: BuilderHeaderProps) {
 	const history = usePuck((state) => state.history);
 
@@ -145,7 +148,7 @@ export function BuilderHeader({
 				</button>
 				<button
 					onClick={handleExport}
-					className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
+					className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
 				>
 					<Download size={16} />
 					Export{" "}
@@ -154,6 +157,13 @@ export function BuilderHeader({
 						: outputType === "json"
 							? "JSON"
 							: "HTML"}
+				</button>
+				<button
+					onClick={handleSave}
+					className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
+				>
+					<Save size={16} />
+					Save
 				</button>
 			</div>
 		</header>

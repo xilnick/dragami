@@ -96,6 +96,123 @@ export const MediaBlocks = {
 			);
 		},
 	},
+	VideoBlock: {
+		fields: {
+			src: { type: "text" as const, label: "Video Thumbnail URL" },
+			alt: { type: "text" as const },
+			width: { type: "number" as const },
+			link: { type: "text" as const, label: "Video Link" },
+			align: {
+				type: "radio" as const,
+				options: [
+					{ label: "Left", value: "left" },
+					{ label: "Center", value: "center" },
+					{ label: "Right", value: "right" },
+				],
+			},
+			padding: { type: "number" as const },
+		},
+		defaultProps: {
+			src: "",
+			alt: "Video thumbnail",
+			width: 100,
+			link: "",
+			align: "center",
+			padding: 10,
+		},
+		render: ({ src, alt, width, link, align, padding, id, puck }: any) => {
+			const blockOverrides = useLiveContentStore(
+				(state) => state.overrides[id],
+			);
+			const openManager = useImageManagerStore((state) => state.openManager);
+			const liveSrc = blockOverrides?.src ?? src;
+			const liveLink = blockOverrides?.link ?? link;
+
+			const margin =
+				align === "center" ? "0 auto" : align === "right" ? "0 0 0 auto" : "0";
+
+			const handleClick = (e: React.MouseEvent) => {
+				if (puck.isEditing) {
+					e.preventDefault();
+					openManager(id, "src", liveSrc);
+				}
+			};
+
+			if (!liveSrc) {
+				return (
+					<div style={{ padding: `${padding}px` }} onClick={handleClick}>
+						<div
+							style={{
+								width: `${width}%`,
+								height: "150px",
+								margin,
+								backgroundColor: "#f3f4f6",
+								border: "2px dashed #cbd5e1",
+								display: "flex",
+								alignItems: "center",
+								justifyContent: "center",
+								color: "#64748b",
+								borderRadius: "8px",
+								fontFamily: "sans-serif",
+								fontSize: "14px",
+								cursor: puck.isEditing ? "pointer" : "default",
+							}}
+						>
+							<span>🎥 Click to add Video Thumbnail</span>
+						</div>
+					</div>
+				);
+			}
+
+			const img = (
+				<div style={{ position: "relative", width: `${width}%`, margin }}>
+					<img
+						src={liveSrc}
+						alt={alt}
+						style={{
+							width: "100%",
+							height: "auto",
+							display: "block",
+							cursor: puck.isEditing ? "pointer" : "default",
+						}}
+						onClick={handleClick}
+					/>
+					<div
+						style={{
+							position: "absolute",
+							top: "50%",
+							left: "50%",
+							transform: "translate(-50%, -50%)",
+							width: "60px",
+							height: "60px",
+							backgroundColor: "rgba(0, 0, 0, 0.6)",
+							borderRadius: "50%",
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "center",
+							pointerEvents: "none",
+						}}
+					>
+						<div
+							style={{
+								width: 0,
+								height: 0,
+								borderTop: "15px solid transparent",
+								borderBottom: "15px solid transparent",
+								borderLeft: "25px solid white",
+								marginLeft: "5px",
+							}}
+						/>
+					</div>
+				</div>
+			);
+			return (
+				<div style={{ padding: `${padding}px` }}>
+					{liveLink && !puck.isEditing ? <a href={liveLink}>{img}</a> : img}
+				</div>
+			);
+		},
+	},
 	LogoBlock: {
 		fields: {
 			src: { type: "text" as const, label: "Logo URL" },

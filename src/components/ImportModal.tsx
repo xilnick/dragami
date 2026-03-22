@@ -23,6 +23,7 @@ export function ImportModal({
 				<div className="flex items-center justify-between p-4 border-b border-gray-200">
 					<h2 className="text-lg font-semibold">Import Template</h2>
 					<button
+						type="button"
 						onClick={() => setShowImport(false)}
 						className="text-gray-500 hover:text-gray-700"
 					>
@@ -43,6 +44,7 @@ export function ImportModal({
 				</div>
 				<div className="p-4 border-t border-gray-200 flex justify-between items-center">
 					<button
+						type="button"
 						onClick={() => handleImport(true)}
 						className="px-4 py-2 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-md hover:bg-blue-100"
 						title="Imports the exact HTML into a single Raw HTML block without parsing"
@@ -51,12 +53,14 @@ export function ImportModal({
 					</button>
 					<div className="flex gap-3">
 						<button
+							type="button"
 							onClick={() => setShowImport(false)}
 							className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
 						>
 							Cancel
 						</button>
 						<button
+							type="button"
 							onClick={() => handleImport(false)}
 							className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
 						>

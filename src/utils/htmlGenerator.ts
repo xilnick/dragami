@@ -44,6 +44,25 @@ export function generateHtml(data: Data): string {
             ${block.props.content}
           </div>
         `;
+			case "ListBlock": {
+				const items = block.props.items || [];
+				const listType = block.props.listType === "ol" ? "ol" : "ul";
+				const listItems = items
+					.map(
+						(item: any) => `<li style="margin-bottom: 8px;">${item.text}</li>`,
+					)
+					.join("");
+				const listStyleType =
+					block.props.listType === "ol" ? "decimal" : "disc";
+
+				return `
+          <div style="color: ${block.props.color}; font-size: ${block.props.fontSize}px; padding: ${block.props.padding}px;">
+            <${listType} style="margin: 0; padding-left: 20px; list-style-type: ${listStyleType};">
+              ${listItems}
+            </${listType}>
+          </div>
+        `;
+			}
 			case "CTAButton": {
 				const ctaTextColor = getContrastColor(block.props.bgColor);
 				return `
@@ -63,6 +82,28 @@ export function generateHtml(data: Data): string {
 							? "0 0 0 auto"
 							: "0";
 				const img = `<img src="${block.props.src}" alt="${block.props.alt}" style="width: ${block.props.width}%; height: auto; display: block; margin: ${margin};" />`;
+				return `
+          <div style="padding: ${block.props.padding}px;">
+            ${block.props.link ? `<a href="${block.props.link}">${img}</a>` : img}
+          </div>
+        `;
+			}
+			case "VideoBlock": {
+				if (!block.props.src) return "";
+				const margin =
+					block.props.align === "center"
+						? "0 auto"
+						: block.props.align === "right"
+							? "0 0 0 auto"
+							: "0";
+				const img = `
+          <div style="position: relative; width: ${block.props.width}%; margin: ${margin};">
+            <img src="${block.props.src}" alt="${block.props.alt}" style="width: 100%; height: auto; display: block;" />
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background-color: rgba(0, 0, 0, 0.6); border-radius: 50%; display: flex; align-items: center; justify-content: center; pointer-events: none;">
+              <div style="width: 0; height: 0; border-top: 15px solid transparent; border-bottom: 15px solid transparent; border-left: 25px solid white; margin-left: 5px;"></div>
+            </div>
+          </div>
+        `;
 				return `
           <div style="padding: ${block.props.padding}px;">
             ${block.props.link ? `<a href="${block.props.link}">${img}</a>` : img}
